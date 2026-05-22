@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alitas y Sabores</title>
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f0a08;
+      --bg2: #160e0a;
+      --card: #1c110d;
+      --accent: #ff4500;
+      --accent2: #ff8c00;
+      --yellow: #ffd700;
+      --text: #f5ede8;
+      --muted: #9a7a6a;
+      --border: #2a1810;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(15,10,8,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Russo One', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, var(--accent), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff !important;
+      padding: 0.5rem 1.4rem;
+      border-radius: 4px;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 60%, rgba(255,69,0,0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 30% 30%, rgba(255,140,0,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .fire-emoji {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.1s forwards;
+      display: block;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,69,0,0.15);
+      border: 1px solid rgba(255,69,0,0.3);
+      color: var(--accent2);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Russo One', sans-serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.4s forwards;
+    }
+
+    .hero h1 .line1 { color: var(--text); }
+    .hero h1 .line2 {
+      background: linear-gradient(135deg, var(--accent), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-top: 1.5rem;
+      max-width: 500px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.6s forwards;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.8s forwards;
+    }
+
+    .btn-fire {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      padding: 1rem 2.5rem;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(255,69,0,0.4);
+    }
+
+    .btn-fire:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(255,69,0,0.6);
+    }
+
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 1rem 2.5rem;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 1s forwards;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .stat { text-align: center; }
+
+    .stat-num {
+      font-family: 'Russo One', sans-serif;
+      font-size: 2.2rem;
+      background: linear-gradient(135deg, var(--accent), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    .ticker {
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      padding: 0.7rem 0;
+    }
+
+    .ticker-inner {
+      display: flex;
+      gap: 2rem;
+      animation: ticker 16s linear infinite;
+      white-space: nowrap;
+      width: max-content;
+    }
+
+    .ticker-inner span {
+      font-family: 'Russo One', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.9);
+      text-transform: uppercase;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .section {
+      padding: 6rem 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-top { margin-bottom: 3rem; }
+
+    .section-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Russo One', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .section-title span {
+      background: linear-gradient(135deg, var(--accent), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .menu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(255,69,0,0.2);
+      border-color: var(--accent);
+    }
+
+    .menu-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menu-label {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+    }
+
+    .spicy {
+      position: absolute;
+      top: 12px; right: 12px;
+      font-size: 1.2rem;
+    }
+
+    .menu-info { padding: 1.4rem; }
+
+    .menu-name {
+      font-family: 'Russo One', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .menu-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    .menu-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .menu-price {
+      font-family: 'Russo One', sans-serif;
+      font-size: 1.2rem;
+      background: linear-gradient(135deg, var(--accent), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .menu-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.2s;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    .menu-btn:hover { transform: scale(1.05); }
+
+    .gallery-wrap {
+      background: var(--bg2);
+      padding: 6rem 2.5rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gallery-inner { max-width: 1200px; margin: 0 auto; }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 220px 220px;
+      gap: 8px;
+      margin-top: 2.5rem;
+    }
+
+    .gallery-item {
+      background: var(--card);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      overflow: hidden;
+      transition: transform 0.3s;
+      position: relative;
+    }
+
+    .menu-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .contact-wrap {
+      padding: 6rem 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .contact-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-left h2 {
+      font-family: 'Russo One', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .contact-left h2 span {
+      background: linear-gradient(135deg, var(--accent), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .contact-left p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-details { display: flex; flex-direction: column; gap: 0.8rem; }
+
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .contact-detail .icon {
+      width: 36px; height: 36px;
+      background: rgba(255,69,0,0.1);
+      border: 1px solid rgba(255,69,0,0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .contact-right { display: flex; flex-direction: column; gap: 1rem; }
+
+    .whatsapp-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      background: #25d366;
+      color: #fff;
+      padding: 1.1rem 2rem;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.3);
+    }
+
+    .whatsapp-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(37,211,102,0.5);
+    }
+
+    .order-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    footer {
+      background: #080503;
+      border-top: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-family: 'Russo One', sans-serif;
+      font-size: 1.2rem;
+      background: linear-gradient(135deg, var(--accent), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .footer-copy { color: var(--muted); font-size: 0.8rem; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .section { padding: 4rem 1.5rem; }
+      .gallery-wrap { padding: 4rem 1.5rem; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .gallery-item:nth-child(1) { grid-column: span 2; min-height: 220px; font-size: 5rem; }
+      .contact-wrap { padding: 4rem 1.5rem; }
+      .contact-box { grid-template-columns: 1fr; gap: 2rem; padding: 2rem; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">🍗 Alitas y Sabores</div>
+    <ul class="nav-links">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#menu">Menú</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#contacto" class="nav-cta">Pedir Ya 🔥</a></li>
+    </ul>
+  </nav>
+
+  <div id="inicio" class="hero">
+    <span class="fire-emoji">🔥</span>
+    <div class="hero-tag">⚡ Las mejores alitas de la ciudad</div>
+    <h1>
+      <span class="line1">Alitas y</span>
+      <span class="line2">Sabores</span>
+    </h1>
+    <p class="hero-desc">Alitas crujientes, salsas explosivas y sabores que te dejan con ganas de más. ¡Pide ahora y siente el fuego!</p>
+    <div class="hero-btns">
+      <a href="#contacto" class="btn-fire">🍗 Pedir por WhatsApp</a>
+      <a href="#menu" class="btn-ghost">Ver Menú</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">🌶️ 5</div>
+        <div class="stat-label">Salsas picantes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">30′</div>
+        <div class="stat-label">Entrega rápida</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">⭐ 5.0</div>
+        <div class="stat-label">Calificación</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span>ALITAS Y SABORES</span><span> 🔥 </span>
+      <span>SALSAS EXPLOSIVAS</span><span> 🔥 </span>
+      <span>SUPER CRUJIENTES</span><span> 🔥 </span>
+      <span>PIDE YA</span><span> 🔥 </span>
+      <span>COLOMBIA</span><span> 🔥 </span>
+      <span>ALITAS Y SABORES</span><span> 🔥 </span>
+      <span>SALSAS EXPLOSIVAS</span><span> 🔥 </span>
+      <span>SUPER CRUJIENTES</span><span> 🔥 </span>
+      <span>PIDE YA</span><span> 🔥 </span>
+      <span>COLOMBIA</span><span> 🔥 </span>
+    </div>
+  </div>
+
+  <div id="menu" class="section">
+    <div class="section-top">
+      <span class="section-tag">Nuestras especialidades</span>
+      <h2 class="section-title">El <span>Menú</span> 🍗</h2>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <div class="menu-img">
+          <img src="imagenes1/alitas-bbq.jpg" alt="Alitas BBQ" />
+          <div class="menu-label">Popular</div>
+          <div class="spicy">🌶️🌶️</div>
+        </div>
+        <div class="menu-info">
+          <p class="menu-name">Alitas BBQ</p>
+          <p class="menu-desc">Alitas bañadas en salsa BBQ ahumada, crujientes por fuera y jugosas por dentro.</p>
+          <div class="menu-footer">
+            <span class="menu-price">Consultar</span>
+            <button class="menu-btn" onclick="window.open('https://wa.me/573000000000','_blank')">Pedir 🍗</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-img">
+          <img src="imagenes1/alitas-explosivas.jpg" alt="Alitas Explosivas" />
+          <div class="menu-label" style="background:linear-gradient(135deg,#ff0000,#ff4500);">Picante</div>
+          <div class="spicy">🌶️🌶️🌶️</div>
+        </div>
+        <div class="menu-info">
+          <p class="menu-name">Alitas Explosivas</p>
+          <p class="menu-desc">Para los valientes. Salsa de habanero y chile que te hace sudar. ¿Te atreves?</p>
+          <div class="menu-footer">
+            <span class="menu-price">Consultar</span>
+            <button class="menu-btn" onclick="window.open('https://wa.me/573000000000','_blank')">Pedir 🍗</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-img">
+          <img src="imagenes1/alitas-ajo.jpg" alt="Alitas Ajo Parmesano" />
+          <div class="menu-label" style="background:linear-gradient(135deg,#ffd700,#ff8c00);">Especial</div>
+        </div>
+        <div class="menu-info">
+          <p class="menu-name">Alitas Ajo Parmesano</p>
+          <p class="menu-desc">Mantequilla de ajo, parmesano y hierbas. El sabor que más enamora.</p>
+          <div class="menu-footer">
+            <span class="menu-price">Consultar</span>
+            <button class="menu-btn" onclick="window.open('https://wa.me/573000000000','_blank')">Pedir 🍗</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-img">
+          <img src="imagenes1/combo.jpg" alt="Combo Familiar" />
+        </div>
+        <div class="menu-info">
+          <p class="menu-name">Combo Familiar</p>
+          <p class="menu-desc">20 alitas a tu gusto, papas fritas y bebidas. Perfecto para compartir.</p>
+          <div class="menu-footer">
+            <span class="menu-price">Consultar</span>
+            <button class="menu-btn" onclick="window.open('https://wa.me/573000000000','_blank')">Pedir 🍗</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="galeria" class="gallery-wrap">
+    <div class="gallery-inner">
+      <div class="section-top">
+        <span class="section-tag">Nuestro trabajo</span>
+        <h2 class="section-title">Así lucen <span>nuestras alitas</span></h2>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="imagenes1/galeria-alitas1.jpg" alt="Galería 1" /></div>
+        <div class="gallery-item"><img src="imagenes1/galeria-alitas2.jpg" alt="Galería 2" /></div>
+        <div class="gallery-item"><img src="imagenes1/galeria-alitas3.jpg" alt="Galería 3" /></div>
+        <div class="gallery-item"><img src="imagenes1/galeria-alitas4.jpg" alt="Galería 4" /></div>
+        <div class="gallery-item"><img src="imagenes1/galeria-alitas5.jpg" alt="Galería 5" /></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="contacto" class="contact-wrap">
+    <div class="contact-box">
+      <div class="contact-left">
+        <span class="section-tag">Escríbenos</span>
+        <h2>¿Listo para el <span>sabor?</span></h2>
+        <p>Pide tus alitas por WhatsApp y recíbelas en la puerta de tu casa. Rápido, fácil y delicioso.</p>
+        <div class="contact-details">
+          <div class="contact-detail">
+            <div class="icon">📍</div>
+            <span>Colombia</span>
+          </div>
+          <div class="contact-detail">
+            <div class="icon">🚚</div>
+            <span>Domicilio disponible</span>
+          </div>
+          <div class="contact-detail">
+            <div class="icon">⏰</div>
+            <span>Abierto todos los días</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-right">
+        <a href="https://wa.me/573000000000" class="whatsapp-btn">
+          💬 Pedir por WhatsApp
+        </a>
+        <p class="order-note">Sin comisiones · Respuesta inmediata</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">🍗 Alitas y Sabores</div>
+    <div class="footer-copy">© 2025 Alitas y Sabores. Todos los derechos reservados.</div>
+  </footer>
+
+</body>
+</html>
